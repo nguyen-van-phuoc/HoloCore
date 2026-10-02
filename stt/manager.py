@@ -19,7 +19,7 @@ class STTManager:
                     self.speech = SpeechRecognizer()
                 return self.speech.listen()
             else:
-                if config.STT_LANGUAGE == "vi":
+                if config.STT_LANGUAGE:
                     if self.sherpa is None:
                         self.sherpa = MicZipformerRecognizer()
                     return self.sherpa.listen(silence_duration=1.5, volume_threshold=0.015)

@@ -1,8 +1,8 @@
 from llm.chunker import Chunker
-from tts.gpt_sovits import GPTSoVits
+from tts.manager_tts import TTSManager
 
 class StreamProcessor:
-    def __init__(self, tts: GPTSoVits):
+    def __init__(self, tts: TTSManager) -> None:
         self.tts = tts
         self.full_response = ""
         self._chunker = Chunker()

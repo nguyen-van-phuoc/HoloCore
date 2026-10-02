@@ -7,8 +7,7 @@ from games.chess.chess_board import ChessBoard, WINDOW_SIZE
 from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QApplication, QGridLayout, QLayout
 from games.chess.chess_ai import OllamaClient, CharacterAgent, ChessGameController
 
-from tts.gpt_sovits import GPTSoVits
-
+from tts.manager_tts import TTSManager
 
 # AI WORKER (BACKGROUND THREAD TO PREVENT UI FREEZING)
 class AIWorker(QThread):
@@ -34,7 +33,7 @@ class MainWindow(QWidget):
 
     game_losed = pyqtSignal()
 
-    def __init__(self, tts_engine: GPTSoVits):
+    def __init__(self, tts_engine: TTSManager):
         super().__init__()
         self.setWindowTitle("Play Chess with Holo")
 

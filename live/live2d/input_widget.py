@@ -196,14 +196,14 @@ class WaterDropAmberButton(QPushButton):
 
 
 class MicWorker(QObject):
-    text_received = pyqtSignal(str)  # Phát tín hiệu mỗi khi nghe xong 1 câu
+    text_received = pyqtSignal(str)
     error = pyqtSignal(str)
     finished = pyqtSignal()
 
     def __init__(self, stt_manager):
         super().__init__()
         self.stt_manager = stt_manager
-        self.is_running = True  # Cờ điều khiển vòng lặp
+        self.is_running = True
 
     def run(self):
         """Continuous listening loop until is_running = False"""
@@ -227,6 +227,7 @@ class MicWorker(QObject):
 class TrueLiquidWidget(QWidget):
     CARD_WIDTH = 700
     CARD_HEIGHT = 66
+    user_interrupt = pyqtSignal()
 
     def __init__(self, pipeline=None, parent=None):
         super().__init__(parent)
@@ -328,6 +329,7 @@ class TrueLiquidWidget(QWidget):
         self.pipe_line = pipeline
         self.thread_pipeline = None
         self.worker_pipeline = None
+        self.pipeline_future = None
 
         self.mic_thread = None
         self.mic_worker = None
@@ -549,6 +551,9 @@ class TrueLiquidWidget(QWidget):
         if self.thread_pipeline is not None and self.thread_pipeline.isRunning():
             print("[WARN] The pipeline is busy processing the previous request, skipping this one.:", user_input)
             return
+        if self.pipeline_future is not None and not self.pipeline_future.done():
+            self.pipeline_future.cancel()
+        self.user_interrupt.emit()
 
         print(f"[User] {user_input}")
 
@@ -574,6 +579,7 @@ class TrueLiquidWidget(QWidget):
         self.thread_pipeline.start()
 
     def on_pipeline_finished(self, result):
+        self.pipeline_future = result
         if not self.is_listening:
             self.input.setEnabled(True)
             self.input.setFocus()

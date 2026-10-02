@@ -20,7 +20,7 @@ The project is designed around a simple principle:
 
 * 🧠 **Local LLM** powered by Ollama
 * 🎙️ **Offline STT** for speech recognition
-* 🔊 **Local TTS** with GPT-SoVITS
+* 🔊 **Local TTS** with KorvaTTS & GPT-SoVITS
 * 🎭 **Live2D avatar** with motion control and lip sync
 * 🛠️ **MCP tool system** for modular tool execution
 * 💾 **Short-term and long-term memory**
@@ -402,7 +402,7 @@ The application starts the main HoloCore runtime and initializes the required su
 
 ---
 
-# 🧠 Memory & Context System
+## 🧠 Memory & Context System
 
 HoloCore uses three independent context sources:
 
@@ -438,7 +438,7 @@ This separates **context retrieval** from **LLM execution and tool handling**.
 
 ---
 
-# 🛠️ MCP Tool System
+## 🛠️ MCP Tool System
 
 HoloCore uses **MCP (Model Context Protocol)** to provide tools to the local LLM.
 
@@ -485,7 +485,7 @@ Tool calls are handled through the MCP layer, which executes the requested tool 
 
 ---
 
-# 👁️ Vision
+## 👁️ Vision
 
 HoloCore supports local vision models through Ollama.
 
@@ -505,7 +505,7 @@ The vision model does not need to be the same model used for normal conversation
 
 ---
 
-# 🎙️ Speech Recognition
+## 🎙️ Speech Recognition
 
 HoloCore supports offline speech recognition.
 
@@ -536,17 +536,34 @@ This allows different STT engines or models to be integrated without changing th
 
 ---
 
-# 🔊 TTS - GPT-SoVITS
+## 🔊 TTS
 
-HoloCore uses **GPT-SoVITS** for local voice synthesis.
+HoloCore supports two local TTS backends:
 
-GPT-SoVITS provides zero-shot / reference-based voice cloning and is integrated as the TTS backend.
+| Setting | TTS Backend | Language |
+|---------|-------------|----------|
+| `IS_VIETNAMESE = True` | **KorvaTTS** | Vietnamese |
+| `IS_VIETNAMESE = False` | **GPT-SoVITS** | Other languages |
+
+The TTS backend is selected automatically based on the `IS_VIETNAMESE` setting in `core/config.py`.
+```python
+# core/config.py
+```
+
+
+### 🇻🇳 KorvaTTS
+
+When `IS_VIETNAMESE = True`, HoloCore uses **KorvaTTS** for Vietnamese voice synthesis.
+
+### 🌐 GPT-SoVITS
+
+When `IS_VIETNAMESE = False`, HoloCore uses **GPT-SoVITS** for local voice synthesis, including zero-shot / reference-based voice cloning.
 
 The required installation and pretrained models are described in the [Installation](#-installation) section.
 
----
 
-# 🎭 Live2D
+
+## 🎭 Live2D
 
 HoloCore integrates a Live2D avatar for visual interaction, including motion control and audio-driven lip synchronization.
 
@@ -573,7 +590,7 @@ Motion markers are embedded directly into streamed responses and processed by th
 
 ---
 
-# ♟️ Games
+## ♟️ Games
 
 HoloCore provides local game functionality through MCP.
 
@@ -590,7 +607,7 @@ The required Stockfish installation is described in the [Installation](#-install
 
 ---
 
-# ⚡ Streaming
+## ⚡ Streaming
 
 HoloCore streams the LLM response directly into dialogue processing and TTS.
 
@@ -605,7 +622,7 @@ This reduces perceived response latency and allows the assistant to begin speaki
 
 ---
 
-# 🌐 Optional Web Search
+## 🌐 Optional Web Search
 
 HoloCore can optionally provide web search through an MCP tool.
 
@@ -627,7 +644,7 @@ SERPER_API_KEY=your_api_key_here
 
 ---
 
-# 🧱 Design Principles
+## 🧱 Design Principles
 
 HoloCore is built around several architectural principles.
 
@@ -657,7 +674,7 @@ The response pipeline is designed around streaming generation to reduce latency.
 
 ---
 
-# 📌 Project Status
+## 📌 Project Status
 
 HoloCore is currently under active development.
 
@@ -665,6 +682,6 @@ The architecture and individual components may change as the project evolves.
 
 ---
 
-# 📄 License
+## 📄 License
 
 This project is currently under development and does not yet have a defined open-source license.

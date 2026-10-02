@@ -7,7 +7,7 @@ import traceback
 import threading
 from core import config
 import live2d.v3 as live2d
-from tts.gpt_sovits import GPTSoVits
+from tts.manager_tts import TTSManager
 from PyQt6.QtGui import QSurfaceFormat
 from core.app_context import AppContext
 from PyQt6.QtWidgets import QApplication
@@ -67,7 +67,7 @@ class PipeLine:
         live2d_window = Live2DWidget(self.lip_sync_state)
         input_window = TrueLiquidWidget(pipeline=self)
 
-        self.tts = GPTSoVits(self.voice, self.lip_sync_state, live2d_window, input_window)
+        self.tts = TTSManager(self.voice, self.lip_sync_state, live2d_window, input_window)
         AppContext.tts = self.tts
 
         self.tts.signals.play_motion.connect(live2d_window.play_animation)
